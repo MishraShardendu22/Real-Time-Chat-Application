@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -5,6 +6,9 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription }
 import { MessageCircle, Mail, Lock } from "lucide-react";
 import { motion } from "framer-motion";
 import { Boxes } from "@/components/ui/background-boxes";
+import { toast } from "sonner";
+import { apiClient } from "@/lib/api-client";
+import { SIGNUP_ROUTE } from "@/utils/constants";
 
 const Auth = () => {
   const [Lpass, setLpass] = useState("");
@@ -14,10 +18,29 @@ const Auth = () => {
   const [Semail, setSemail] = useState("");
   const [SconfirmPass, setSconfirmPass] = useState("");
 
-  const handleSignUp = (event: React.FormEvent) => {
-    event.preventDefault();
-    console.log(Semail, Spass, SconfirmPass);
+  const validateSignUp = () => {
+    if (SconfirmPass !== Spass) {
+      toast.error("Passwords do not match");
+      return false;
+    }
+    return true;
   };
+
+  const handleSignUp = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (validateSignUp()) {
+      try {
+        await apiClient.post(SIGNUP_ROUTE, {
+          email: Semail,
+          password: Spass,
+        });
+        toast.success("You have successfully registered!");
+      } catch (error) {
+        toast.error("Registration failed. Please try again.");
+      }
+    }
+  };
+  
 
   const handleLogIn = (event: React.FormEvent) => {
     event.preventDefault();
@@ -26,50 +49,36 @@ const Auth = () => {
 
   const containerVariants = {
     hidden: { opacity: 0, scale: 0.9 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
-      transition: { 
+      transition: {
         duration: 0.5,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const inputVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
+    visible: {
+      y: 0,
       opacity: 1,
-      transition: { 
+      transition: {
         duration: 0.3,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
-  const InputField = ({ icon: Icon, ...props }: { icon: React.ComponentType<React.SVGProps<SVGSVGElement>> } & React.InputHTMLAttributes<HTMLInputElement>) => (
-    <div className="relative">
-      <Icon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-      <input
-        {...props}
-        className="bg-gray-800 w-full p-3 pl-10 rounded-md border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition duration-200"
-      />
-    </div>
-  );
-
   return (
-      <div className="h-96 relative w-full overflow-hidden bg-slate-900 flex-col rounded-lg flex items-center justify-center min-h-screen ">
+    <div className="h-96 relative w-full overflow-hidden bg-slate-900 flex-col rounded-lg flex items-center justify-center min-h-screen ">
       <div className="absolute inset-0 w-full h-full  z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
       <Boxes />
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
+      <motion.div variants={containerVariants} initial="hidden" animate="visible">
         <Card className="w-[400px] shadow-2xl rounded-lg overflow-hidden bg-gray-700 text-white">
           <CardHeader className="space-y-1 text-center bg-gray-800 p-8">
-            <motion.div 
+            <motion.div
               className="flex items-center justify-center space-x-2"
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -89,34 +98,40 @@ const Auth = () => {
 
               <TabsContent value="Sign-up">
                 <form onSubmit={handleSignUp} className="space-y-6">
-                  <motion.div variants={inputVariants}>
-                    <InputField
-                      icon={Mail}
+                  <motion.div variants={inputVariants} className="relative">
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <input
+                      className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
                       onChange={(event) => setSemail(event.target.value)}
                       type="email"
                       placeholder="E-mail"
                       value={Semail}
                       required
+                      autoComplete="email"
                     />
                   </motion.div>
-                  <motion.div variants={inputVariants}>
-                    <InputField
-                      icon={Lock}
+                  <motion.div variants={inputVariants} className="relative">
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <input
+                      className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
                       onChange={(event) => setSpass(event.target.value)}
                       type="password"
                       placeholder="Password"
                       value={Spass}
                       required
+                      autoComplete="new-password"
                     />
                   </motion.div>
-                  <motion.div variants={inputVariants}>
-                    <InputField
-                      icon={Lock}
+                  <motion.div variants={inputVariants} className="relative">
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <input
+                      className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
                       onChange={(event) => setSconfirmPass(event.target.value)}
                       type="password"
                       placeholder="Confirm Password"
                       value={SconfirmPass}
                       required
+                      autoComplete="new-password"
                     />
                   </motion.div>
                   <motion.div 
@@ -133,24 +148,28 @@ const Auth = () => {
 
               <TabsContent value="Log-in">
                 <form onSubmit={handleLogIn} className="space-y-6">
-                  <motion.div variants={inputVariants}>
-                    <InputField
-                      icon={Mail}
+                  <motion.div variants={inputVariants} className="relative">
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <input
+                      className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
                       onChange={(event) => setLemail(event.target.value)}
                       type="email"
                       placeholder="E-mail"
                       value={Lemail}
                       required
+                      autoComplete="email"
                     />
                   </motion.div>
-                  <motion.div variants={inputVariants}>
-                    <InputField
-                      icon={Lock}
+                  <motion.div variants={inputVariants} className="relative">
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <input
+                      className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
                       onChange={(event) => setLpass(event.target.value)}
                       type="password"
                       placeholder="Password"
                       value={Lpass}
                       required
+                      autoComplete="current-password"
                     />
                   </motion.div>
                   <motion.div 

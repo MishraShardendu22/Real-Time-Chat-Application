@@ -51,5 +51,14 @@ export const register = async (req,res,next) => {
 }
 
 export const login = async (req,res,next) => {
-
+    try {
+        
+    }catch(error){
+        console.log(error);
+        return res.status(400).json(
+            {
+                message : "An error occured while logging in the user"
+            }
+        )
+    }
 }
