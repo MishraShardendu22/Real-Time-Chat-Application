@@ -3,6 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import colors from 'colors';
 import cors from 'cors';
+import AuthRoutes from './routes/AuthRoutes.js';
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ app.use(cors());
 // app.get("/",(req,res) => {
 //   res.send("API is running...");
 // })
+
+app.use("/api/auth",AuthRoutes)
 
 app.listen(PORT, () => {
   connectDB();
