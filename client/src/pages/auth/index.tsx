@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { Boxes } from "@/components/ui/background-boxes";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
-import { SIGNUP_ROUTE } from "@/utils/constants";
+import { SIGNUP_ROUTE,LOGIN_ROUTE } from "@/utils/constants";
 
 const Auth = () => {
   const [Lpass, setLpass] = useState("");
@@ -33,7 +33,12 @@ const Auth = () => {
         await apiClient.post(SIGNUP_ROUTE, {
           email: Semail,
           password: Spass,
-        });
+          // if we dont set with credentials to true then the cookie wont be sent 
+          // we wont be able to create a session 
+          },{ 
+            withCredentials: true,
+          }
+        ); 
         toast.success("You have successfully registered!");
       } catch (error) {
         toast.error("Registration failed. Please try again.");
@@ -42,9 +47,17 @@ const Auth = () => {
   };
   
 
-  const handleLogIn = (event: React.FormEvent) => {
+  const handleLogIn = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(Lemail, Lpass);
+    try{
+      console.log(LOGIN_ROUTE)
+      await apiClient.post(LOGIN_ROUTE,{
+        email: Lemail,
+        password: Lpass,
+      },{withCredentials:true});
+    }catch(error){
+      toast.error("Login failed. Please try again.");
+    }
   };
 
   const containerVariants = {

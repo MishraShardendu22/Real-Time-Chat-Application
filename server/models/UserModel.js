@@ -35,9 +35,18 @@ const userSchema = new mongoose.Schema(
     }
 )
 
+// The isModified method comes from Mongoose, the library you're likely using to define your user schema. 
+// Mongoose provides this method to check if a specific field in a document has been modified before saving it. 
+// In this case, it's being used to check if the password field has been changed (for example, during user registration or password update) before rehashing it.
+
 userSchema.pre("save",async function (next){
+    
+    // Only hash if the password is modified
+    if (!this.isModified("password")) return next();
+
+
     const salt = await bcrypt.genSalt(10);
-    this.password = bcrypt.hash(this.password,salt);
+    this.password = await bcrypt.hash(this.password,salt);
     next();
 })
 

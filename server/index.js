@@ -12,13 +12,20 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+
+const corsOptions = {
+  origin: 'http://localhost:5173', // Specify your front-end URL
+  credentials: true, // Allow credentials to be included
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+};
+
+app.use(cors(corsOptions)); // Enable CORS with options
 
 // app.get("/",(req,res) => {
 //   res.send("API is running...");
 // })
 
-app.use("/api/auth",AuthRoutes)
+app.use("/api/auth", AuthRoutes)
 
 app.listen(PORT, () => {
   connectDB();
