@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema(
             type : Boolean,
             default : false
         }
-    }
+    },{ timestamps : true }
 )
 
 // The isModified method comes from Mongoose, the library you're likely using to define your user schema. 
