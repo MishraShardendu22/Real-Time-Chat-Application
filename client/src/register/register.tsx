@@ -141,6 +141,7 @@ const Register = () => {
                     onChange={(e) => setUsername(e.target.value)}
                     required
                     className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
+                    autoComplete="username"
                   />
                   <datalist id="username-list">
                     <option value="Eg.) shardendumishra22" />
@@ -160,6 +161,7 @@ const Register = () => {
                     onChange={(e) => setFullName(e.target.value)}
                     required
                     className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
+                    autoComplete="username"
                   />
                   <datalist id="fullname-list">
                     <option value="Eg.) Mishra Shardendu" />
@@ -179,6 +181,7 @@ const Register = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
+                      autoComplete="new-password"
                     />
                     <button
                       type="button"
@@ -202,6 +205,7 @@ const Register = () => {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       required
                       className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
+                      autoComplete="new-password"
                     />
                   </div>
                 </motion.div>

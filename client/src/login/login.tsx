@@ -127,6 +127,7 @@ const Login = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
+                      autoComplete="current-password"
                     />
                     <button
                       type="button"
