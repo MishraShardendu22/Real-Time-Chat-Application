@@ -1,42 +1,50 @@
-import Conversation from "../model/conversation.model.js";
+import Conversation from "../model/conversation.model.js"; 
 import Message from "../model/message.model.js";
 
 export const sendMessage = async (req, res) => {
     try {
-        const { message } = req.body;
-        const { id: reciverId } = req.params;
+        console.log("Check - 1 message")
+        const { message } = req.body; console.log(message)
+        const {id:reciverId} = req.params; console.log(reciverId)
+        const senderId = req.user._id; console.log(senderId)
 
-        const senderId = req.user._id;
-        // sometimes this also works: req.user._conditions._id 
-
-        // Error: `Conversation.create` should be `new Conversation`, or it will fail.
+        console.log("Check - 2 message")
+        
         let chat = await Conversation.findOne({
-            participants: {
-                $all: [senderId, reciverId],
-            },
-        });
+            participants:{$all:[senderId , reciverId]}
+        })
+
+        console.log("Check - 3 message")
+        console.log(chat)
 
         if (!chat) {
             chat = new Conversation({
-                participants: [senderId, reciverId], // Error: This should just be an array, no need for `$all` inside create.
+                participants: [senderId, reciverId],
             });
         }
 
+        console.log("Check - 4 message")
+
         const newMessage = new Message({
             senderId,
-            reciverId, // Typo: should be `receiverId` for consistency
+            reciverId,
             message,
             conversationId: chat._id,
         });
 
-        // Error: `chat.message.push()` will fail if `chat.message` is undefined.
+        console.log("Check - 5 message")
+        // Error: chat.message might be undefined, so initialize it if necessary
         if (newMessage) {
-            if (!chat.message) chat.message = []; // Ensure array exists
-            chat.message.push(newMessage._id);
+            if (!chat.message) {  // Check if chat.message is undefined
+                chat.message = [];  // Initialize it to an empty array
+            } 
+            chat.message.push(newMessage._id);  // Push the message ID
         }
 
+        console.log("Check - 6 message")
         await Promise.all([chat.save(), newMessage.save()]);
 
+        console.log("Check - 7 message")
         res.status(200).send({
             success: true,
             message: "Message Sent",
@@ -62,7 +70,7 @@ export const getMessage = async (req, res) => {
 
         if (!chat) {
             // Error: Add return here to avoid sending two responses.
-            return res.status(200).send({
+            return res.status(200).send({  // Return immediately to prevent multiple responses
                 success: true,
                 message: "No Message Found",
             });
@@ -80,52 +88,3 @@ export const getMessage = async (req, res) => {
         });
     }
 };
-
-
-// ### 1. **Directly using `new Message()` vs `.create()`**
-
-// - **`new Message()`**: 
-//    This is used to create an instance of the Mongoose model. You manually create the object using the `new` keyword and then call `save()` to insert it into the database.
-
-//    Example:
-//    ```javascript
-//    const message = new Message({
-//        senderId,
-//        reciverId,
-//        message,
-//        conversationId,
-//    });
-//    await message.save();  // Saves to the database
-//    ```
-
-// - **`Message.create()`**: 
-//    This is a shorthand for creating a new document and saving it in one step. It does both `new` and `save()` in one go, making it simpler.
-
-//    Example:
-//    ```javascript
-//    const message = await Message.create({
-//        senderId,
-//        reciverId,
-//        message,
-//        conversationId,
-//    });
-//    ```
-
-// **When to use which:**
-// - Use **`new Model()`** when you need to do something with the object before saving (like adding methods or additional logic).
-// - Use **`.create()`** for a simpler, direct creation and save operation.
-
-// ---
-
-// ### 2. **`Promise.all`**:
-
-// **`Promise.all()`** is a method that takes an array of promises and executes them concurrently (in parallel). It waits until all promises have either resolved or any one of them is rejected.
-
-// In your case, this line:
-// ```javascript
-// await Promise.all([chat.save(), newMessage.save()]);
-// ```
-// means both `chat.save()` and `newMessage.save()` are being executed at the same time. It waits for both to complete (successfully or with an error) before proceeding.
-
-// **Why use it?**
-// - When you need to perform multiple asynchronous operations in parallel and only proceed once all have completed.
