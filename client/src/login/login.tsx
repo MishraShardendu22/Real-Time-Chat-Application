@@ -101,6 +101,7 @@ const Login = () => {
                   transition={{ duration: 0.5, delay: 0.3 }}
                 >
                   <Input
+                    list="email-list" // Added list attribute for autocomplete
                     type="email"
                     placeholder="Email"
                     value={email}
@@ -108,6 +109,10 @@ const Login = () => {
                     required
                     className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
                   />
+                  <datalist id="email-list">
+                    <option value="shardendumishra1@gmail.com" />
+                    <option value="shardendumishra2@gmail.com" />
+                  </datalist>
                 </motion.div>
                 <motion.div
                   initial={{ x: 50, opacity: 0 }}

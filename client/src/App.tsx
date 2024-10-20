@@ -13,8 +13,8 @@ const App = () => {
         <div className="absolute inset-0 w-full h-full z-20 [mask-image:radial-gradient(transparent,grey)] pointer-events-none" />
         <Boxes />
         <Routes>
-          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
       {/* routes for login and register end here*/}
@@ -22,9 +22,7 @@ const App = () => {
 {/* -------------------------------------------------------------------------------------------------------------------------------------------- */}
 
       {/* routes for the rest of the app start here*/}
-      <Routes>
 
-      </Routes>
       {/* routes for the rest of the app end here*/}
       <Toaster />
     </AuthContextProvider>
