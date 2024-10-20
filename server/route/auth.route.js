@@ -5,9 +5,9 @@ const router = express.Router();
 
 // main routes go here : 
 
-// app.get("/register",userRegister)
-// app.get("/login",userLogin)
-// app.get("/logout",userLogout)
+router.post("/register",userRegister)
+router.post("/login",userLogin)
+router.post("/logout",userLogout)
 
 // till here 
 

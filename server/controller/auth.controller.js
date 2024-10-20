@@ -73,12 +73,14 @@ export const userRegister = async (req,res) => {
 export const userLogin = async (req,res) => {
     try{
         const { email, password } = req.body;
+        console.log("check-1")
         const user = await User.findOne(
             {
                 email,
             }
         )
 
+        console.log("check-2")
         if(!user){
             return res.status(500).send(
                 {
@@ -88,6 +90,7 @@ export const userLogin = async (req,res) => {
             )
         }
 
+        console.log("check-3")
         const isPasswordMatch = await bcryptjs.compare(password,user.password);
         if(!isPasswordMatch){
             return res.status(500).send(
@@ -98,7 +101,10 @@ export const userLogin = async (req,res) => {
             )
         }
 
-        generateToken(newUser._id,res)
+        console.log("check-4")
+        generateToken(user._id,res)
+        
+        console.log("check-5")
         res.status(200).send(
             {
                 _id : user._id,
