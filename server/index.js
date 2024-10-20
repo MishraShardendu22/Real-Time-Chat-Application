@@ -1,3 +1,4 @@
+import { dbConfig } from "./dbConfig/dbConfig.js";
 import colors from "colors";
 
 import express from "express";
@@ -21,8 +22,9 @@ app.get("/", (req, res) => {
 })
 
 app.listen(process.env.PORT, () => {
-    console.log(`Click to connect to the server: http://localhost:${process.env.PORT}`.bold.green.underline);
-    console.log(`Server is running on port ${process.env.PORT}`.bold.red.underline);
+    dbConfig();
+    console.log(`Click to connect to the server: http://localhost:${process.env.PORT}`.green.bold.underline);
+    console.log(`Server is running on port ${process.env.PORT}`.bold.cyan.underline);
 })
 
 // import bodyParser from "body-parser";
