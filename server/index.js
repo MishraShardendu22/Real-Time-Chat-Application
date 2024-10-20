@@ -1,15 +1,18 @@
-import { dbConfig } from "./dbConfig/dbConfig.js";
-import colors from "colors";
-
 import express from "express";
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 import dotenv from "dotenv";
 dotenv.config();
 const PORT = process.env.PORT || 5000
+
+
+import { dbConfig } from "./dbConfig/dbConfig.js";
+import colors from "colors";
+
 
 import cors from "cors"
 const corsOption = {
@@ -18,11 +21,28 @@ const corsOption = {
 }
 app.use(cors(corsOption));
 
+
+import messageRoute from "./route/message.route.js"
+import authRoute from "./route/auth.route.js"
+import userRoute from "./route/user.route.js"
+
+
 // testing ignore
+
 // app.get("/", (req, res) => {
 //     res.send("This is in Testing!");
 // })
 
+// till here
+
+
+// Route Access will go Here
+
+app.use("/api/message", messageRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/user", userRoute);
+
+// till here
 
 
 app.listen(PORT, () => {
