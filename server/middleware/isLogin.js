@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const isLogin = async (req,res,next) => {
+export const isLogin = async (req,res,next) => {
     try{
         console.log("check-1")
 

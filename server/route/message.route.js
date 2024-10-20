@@ -1,7 +1,5 @@
 import { getMessage, sendMessage } from '../controller/message.controller.js';
-import Conversation from '../model/conversation.model.js';
-import Message from '../model/message.model.js';
-import User from "../model/user.model.js"
+import { isLogin } from "../middleware/isLogin.js"
 import express from 'express';
 
 const router = express.Router();
