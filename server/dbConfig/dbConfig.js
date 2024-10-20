@@ -6,10 +6,10 @@ const MONGO_URI=process.env.MONGO_URI;
 
 export const dbConfig = async () => {
     try {
-        // testing ignore
-        // console.log("Connecting to the database:", MONGO_URI);
-        
         const connect = await mongoose.connect(MONGO_URI)
+        console.log("Connecting to the database : MongoDB Atlas");
+        
+        // testing ignore
         // console.log(connect) 
     } catch (err) {
         console.log("There was an error connecting to the database");
