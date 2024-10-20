@@ -9,6 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 
 import dotenv from "dotenv";
 dotenv.config();
+const PORT = process.env.PORT || 5000
 
 import cors from "cors"
 const corsOption = {
@@ -17,11 +18,14 @@ const corsOption = {
 }
 app.use(cors(corsOption));
 
-app.get("/", (req, res) => {
-    res.send("This is in Testing!");
-})
+// testing ignore
+// app.get("/", (req, res) => {
+//     res.send("This is in Testing!");
+// })
 
-app.listen(process.env.PORT, () => {
+
+
+app.listen(PORT, () => {
     dbConfig();
     console.log(`Click to connect to the server: http://localhost:${process.env.PORT}`.green.bold.underline);
     console.log(`Server is running on port ${process.env.PORT}`.bold.cyan.underline);
