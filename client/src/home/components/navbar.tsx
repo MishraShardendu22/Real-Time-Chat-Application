@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from "@/context/authContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,6 @@ export const RollingLoader = () => (
     </div>
   </div>
 );
-
 
 const Navbar = () => {
   const [loading, setLoading] = useState(false);
@@ -49,6 +48,7 @@ const Navbar = () => {
     }
   };
 
+  // Added function to handle profile click
   const handleProfileClick = () => {
     navigate("/profile");
   };
@@ -69,8 +69,9 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger onClick={handleProfileClick}>
-                  <Avatar className="h-10 w-10 cursor-pointer">
+                {/* Make sure the onClick is correctly set here */}
+                <TooltipTrigger>
+                  <Avatar className="h-10 w-10 cursor-pointer" onClick={handleProfileClick}> {/* Added onClick here */}
                     <AvatarImage src={authUser.profilepic} alt={authUser.username} />
                     <AvatarFallback><User /></AvatarFallback>
                   </Avatar>

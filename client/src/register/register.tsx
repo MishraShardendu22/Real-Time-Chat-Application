@@ -17,30 +17,6 @@ import {
 import { Boxes } from "@/components/ui/background-boxes";
 import { RollingLoader } from "@/home/components/navbar";
 
-const CustomLoader = () => (
-  <motion.div
-    className="flex space-x-1"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 0.5 }}
-  >
-    {[0, 1, 2].map((index) => (
-      <motion.div
-        key={index}
-        className="w-2 h-2 bg-white rounded-full"
-        animate={{
-          y: ["0%", "-50%", "0%"],
-        }}
-        transition={{
-          duration: 0.6,
-          repeat: Infinity,
-          repeatType: "reverse",
-          delay: index * 0.2,
-        }}
-      />
-    ))}
-  </motion.div>
-);
 
 const Register = () => {
   const navigate = useNavigate();
@@ -56,7 +32,6 @@ const Register = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    <RollingLoader/>
 
     if (password !== confirmPassword) {
       toast.error("Passwords do not match!");
@@ -114,149 +89,158 @@ const Register = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <motion.div
-                    initial={{ x: -50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                  >
-                    <Input
-                      list="email-list" // Added list attribute for autocomplete
-                      type="email"
-                      placeholder="Email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                    <datalist id="email-list">
-                      <option value="Eg.) shardendu1@gmail.com" />
-                      <option value="Eg.) shardendu2@gmail.com" />
-                    </datalist>
-                  </motion.div>
-                  <motion.div
-                    initial={{ x: 50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                  >
-                    <Input
-                      list="username-list" // Added list attribute for autocomplete
-                      type="text"
-                      placeholder="Username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      required
-                      className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
-                      autoComplete="username"
-                    />
-                    <datalist id="username-list">
-                      <option value="Eg.) shardendumishra22" />
-                      <option value="Eg.) I_hateClouds" />
-                    </datalist>
-                  </motion.div>
-                  <motion.div
-                    initial={{ x: 50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                  >
-                    <Input
-                      list="fullname-list" // Added list attribute for autocomplete
-                      type="text"
-                      placeholder="Full Name"
-                      value={fullname}
-                      onChange={(e) => setFullName(e.target.value)}
-                      required
-                      className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
-                      autoComplete="username"
-                    />
-                    <datalist id="fullname-list">
-                      <option value="Eg.) Mishra Shardendu" />
-                      <option value="Eg.) Ayush Mishra" />
-                    </datalist>
-                  </motion.div>
-                  <motion.div
-                    initial={{ x: -50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                  >
-                    <div className="relative">
-                      <Input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
-                        autoComplete="new-password"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword((prev) => !prev)}
-                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
-                      >
-                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                      </button>
-                    </div>
-                  </motion.div>
-                  <motion.div
-                    initial={{ x: -50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                  >
-                    <div className="relative">
-                      <Input
-                        type="password"
-                        placeholder="Confirm Password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                        className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
-                        autoComplete="new-password"
-                      />
-                    </div>
-                  </motion.div>
-                  <motion.div
-                    initial={{ x: -50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                  >
-                    <Select onValueChange={setGender} value={gender}>
-                      <SelectTrigger className="w-full bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500">
-                        <SelectValue placeholder="Select your gender" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-slate-800 border-gray-600 text-white">
-                        <SelectItem value="male">Male</SelectItem>
-                        <SelectItem value="female">Female</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </motion.div>
-                  <motion.div
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                  >
-                    <Button
-                      type="submit"
-                      className="w-full bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-                      disabled={loading}
+                {/* Show the loader if loading is true, otherwise show the form */}
+                {loading ? (
+                  <div className="flex justify-center items-center h-full py-24">
+                    <RollingLoader />
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <motion.div
+                      initial={{ x: -50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.3 }}
                     >
-                      {loading ? <CustomLoader /> : <>Register</>}
-                    </Button>
-                  </motion.div>
-                </form>
+                      <Input
+                        list="email-list" 
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
+                      />
+                      <datalist id="email-list">
+                        <option value="Eg.) shardendu1@gmail.com" />
+                        <option value="Eg.) shardendu2@gmail.com" />
+                      </datalist>
+                    </motion.div>
+                    <motion.div
+                      initial={{ x: 50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                      <Input
+                        list="username-list" 
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                        className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
+                        autoComplete="username"
+                      />
+                      <datalist id="username-list">
+                        <option value="Eg.) shardendumishra22" />
+                        <option value="Eg.) I_hateClouds" />
+                      </datalist>
+                    </motion.div>
+                    <motion.div
+                      initial={{ x: 50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                      <Input
+                        list="fullname-list" 
+                        type="text"
+                        placeholder="Full Name"
+                        value={fullname}
+                        onChange={(e) => setFullName(e.target.value)}
+                        required
+                        className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
+                        autoComplete="username"
+                      />
+                      <datalist id="fullname-list">
+                        <option value="Eg.) Mishra Shardendu" />
+                        <option value="Eg.) Ayush Mishra" />
+                      </datalist>
+                    </motion.div>
+                    <motion.div
+                      initial={{ x: -50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                          className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
+                          autoComplete="new-password"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
+                        >
+                          {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        </button>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      initial={{ x: -50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                      <div className="relative">
+                        <Input
+                          type="password"
+                          placeholder="Confirm Password"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          required
+                          className="bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500"
+                          autoComplete="new-password"
+                        />
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      initial={{ x: -50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                      <Select onValueChange={setGender} value={gender}>
+                        <SelectTrigger className="w-full bg-white/5 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500">
+                          <SelectValue placeholder="Select your gender" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-slate-800 border-gray-600 text-white">
+                          <SelectItem value="male">Male</SelectItem>
+                          <SelectItem value="female">Female</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
+                    <motion.div
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.5 }}
+                    >
+                      <Button
+                        type="submit"
+                        className="w-full bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
+                        disabled={loading}
+                      >
+                        {loading ? <RollingLoader /> : <>Register</>}
+                      </Button>
+                    </motion.div>
+                  </form>
+                )}
               </CardContent>
-              <CardFooter className="flex flex-col items-center gap-4 pt-6">
-                <p className="text-sm text-gray-400">Already have an account?</p>
-                <Button
-                  variant="outline"
-                  asChild
-                  className="w-full bg-transparent border border-indigo-500 text-indigo-300 hover:bg-indigo-500 hover:text-white transition-colors duration-300"
-                >
-                  <Link to="/login">
-                    <UserPlus className="mr-2 h-5 w-5" /> Login
-                  </Link>
-                </Button>
-              </CardFooter>
+              {!loading && (
+                <CardFooter className="flex flex-col items-center gap-4 pt-6">
+                  <p className="text-sm text-gray-400">Already have an account?</p>
+                  <Button
+                    variant="outline"
+                    asChild
+                    className="w-full bg-transparent border border-indigo-500 text-indigo-300 hover:bg-indigo-500 hover:text-white transition-colors duration-300"
+                  >
+                    <Link to="/login">
+                      <UserPlus className="mr-2 h-5 w-5" /> Login
+                    </Link>
+                  </Button>
+                </CardFooter>
+              )}
             </motion.div>
           </Card>
         </motion.div>

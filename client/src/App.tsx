@@ -5,6 +5,7 @@ import { AuthContextProvider } from "./context/authContext.tsx";
 import { Toaster } from "sonner";
 import Home from "./home/home.tsx";
 import { VerifyUser } from "./utils/VerifyUser.tsx";
+import Profile from "./profile/profile.tsx";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route element={<VerifyUser />}>
           <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Register />} />
         </Route>
       </Routes>

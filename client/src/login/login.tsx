@@ -3,38 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/authContext.tsx";
 import { motion } from "framer-motion";
-import { LogIn, UserPlus, Eye, EyeOff } from "lucide-react"; // Import Eye and EyeOff icons
+import { LogIn, UserPlus, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Boxes } from "@/components/ui/background-boxes.tsx";
-import { RollingLoader } from "@/home/components/navbar.tsx";
-
-const CustomLoader = () => (
-  <motion.div
-    className="flex space-x-1"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 0.5 }}
-  >
-    {[0, 1, 2].map((index) => (
-      <motion.div
-        key={index}
-        className="w-2 h-2 bg-white rounded-full"
-        animate={{
-          y: ["0%", "-50%", "0%"],
-        }}
-        transition={{
-          duration: 0.6,
-          repeat: Infinity,
-          repeatType: "reverse",
-          delay: index * 0.2,
-        }}
-      />
-    ))}
-  </motion.div>
-);
+import { RollingLoader } from "@/home/components/navbar.tsx"; // RollingLoader component is used here
 
 const Login = () => {
   const navigate = useNavigate();
@@ -52,7 +27,7 @@ const Login = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    <RollingLoader />
+
     try {
       const response = await axios.post("/api/auth/login", {
         email,
@@ -154,7 +129,7 @@ const Login = () => {
                       className="w-full bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
                       disabled={loading}
                     >
-                      {loading ? <CustomLoader /> : <>
+                      {loading ? <RollingLoader /> : <>
                         <LogIn className="mr-2 h-5 w-5" /> Login
                       </>}
                     </Button>
