@@ -1,15 +1,9 @@
-import { useAuth } from "@/context/authContext"
+import Navbar from "./components/navbar.tsx"
 
 const Home = () => {
-  const authContext = useAuth()
-  if (!authContext) {
-    return <div>Loading...</div>
-  }
-  const { authUser } = authContext
-
-   return (
+  return (
     <div>
-      <h1 className="text-3xl ">Hi {authUser.username}</h1>
+      <Navbar />
     </div>
   )
 }

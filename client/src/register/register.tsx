@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Boxes } from "@/components/ui/background-boxes";
+import { RollingLoader } from "@/home/components/navbar";
 
 const CustomLoader = () => (
   <motion.div
@@ -55,6 +56,7 @@ const Register = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
+    <RollingLoader/>
 
     if (password !== confirmPassword) {
       toast.error("Passwords do not match!");

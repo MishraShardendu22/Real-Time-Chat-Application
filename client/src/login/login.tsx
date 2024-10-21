@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Boxes } from "@/components/ui/background-boxes.tsx";
+import { RollingLoader } from "@/home/components/navbar.tsx";
 
 const CustomLoader = () => (
   <motion.div
@@ -51,6 +52,7 @@ const Login = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
+    <RollingLoader />
     try {
       const response = await axios.post("/api/auth/login", {
         email,
