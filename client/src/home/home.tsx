@@ -4,11 +4,11 @@ import Sidebar from "./components/Sidebar.tsx"
 
 const Home = () => {
   return (
-    <div>
-      <Navbar />
+    <>
+      <Navbar />  
       <Sidebar/>
       <MessageContainer/>
-    </div>
+    </>
   )
 }
 

@@ -9,12 +9,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export const RollingLoader = () => (
-  <div className="flex items-center justify-center h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
+  <div className="flex items-center justify-center h-screen  dark:from-gray-800 dark:to-gray-900">
     <div className="relative">
       <div className="w-24 h-24 border-8 border-blue-200 rounded-full animate-spin-slow"></div>
       <div className="absolute top-0 left-0 w-24 h-24 border-8 border-transparent border-t-pink-500 rounded-full animate-spin-reverse"></div>
       <div className="absolute top-0 left-0 w-24 h-24 border-8 border-transparent border-b-purple-500 rounded-full animate-pulse"></div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center overflow-hidden">
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16  dark:bg-gray-800 rounded-full flex items-center justify-center overflow-hidden">
         <div className="w-full h-2 bg-gradient-to-r from-blue-500 via-pink-500 to-purple-500 animate-loading-bar"></div>
       </div>
     </div>
