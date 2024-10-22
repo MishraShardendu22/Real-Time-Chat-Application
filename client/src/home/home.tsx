@@ -1,5 +1,5 @@
 import Navbar from "./components/navbar.tsx"
-import Sidebar from "./components/Sidebar.tsx"
+import Sidebar from "./components/ChatPage.tsx"
 
 const Home = () => {
   return (

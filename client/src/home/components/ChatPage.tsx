@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { useAuth } from "@/context/authContext";
 import userConversation from "@/zustand/useConversation";
@@ -30,22 +31,22 @@ const UserSkeleton: React.FC = () => (
 );
 
 const UserCard: React.FC<UserCardProps> = ({ user, onClick }) => (
-  <motion.div
-    whileHover={{ backgroundColor: "hsl(var(--muted))" }}
-    onClick={onClick}
-    className="p-3 rounded-lg cursor-pointer"
-  >
-    <div className="flex items-center space-x-3">
-      <img 
-        src={user.profilepic} 
-        alt={`${user.username}'s profile`} 
-        className="w-10 h-10 rounded-full object-cover border border-border"
-      />
-      <span className="font-medium text-sm text-foreground">
-        {user.fullname || user.username}
-      </span>
-    </div>
-  </motion.div>
+<motion.div
+  whileHover={{ backgroundColor: "rgba(169, 169, 169, 1)" }}
+  onClick={onClick}
+  className="p-3 rounded-lg cursor-pointer"
+>
+  <div className="flex items-center space-x-3">
+    <img 
+      src={user.profilepic} 
+      alt={`${user.username}'s profile`} 
+      className="w-10 h-10 rounded-full object-cover border border-border"
+    />
+    <span className="font-medium text-sm text-foreground">
+      {user.fullname || user.username}
+    </span>
+  </div>
+</motion.div>
 );
 
 
@@ -152,6 +153,26 @@ const Sidebar: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [chats, setChats] = useState<User[]>([]);
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
+  const [msgs,setMsgs] = useState<any>([]);
+
+  const fetchMessages = async () => {
+    setLoading(true);
+    const userId = authUser?._id;
+    try {
+      const res = await axios.get(`/api/message/${userId}`);
+      if (res.status !== 200) {
+        console.log(res);
+      }
+      setMsgs(res.data.messages);
+      console.log(msgs);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchMessages();
+  }, []);
 
   const fetchConversations = async () => {
     setLoading(true);
@@ -201,7 +222,7 @@ const Sidebar: React.FC = () => {
           <div className="p-2">
             {loading ? (
               <div className="space-y-2">
-                {[...Array(5)].map((_, i) => (
+                {[...Array(8)].map((_, i) => (
                   <UserSkeleton key={i} />
                 ))}
               </div>
@@ -213,13 +234,15 @@ const Sidebar: React.FC = () => {
               </div>
             ) : (
               <div className="space-y-1">
-                {chats.map((chat) => (
-                  <UserCard
-                    key={chat._id}
-                    user={chat}
-                    onClick={() => setSelectedConversation(chat._id)}
-                  />
-                ))}
+                {
+                  chats.map((chat) => (
+                    <UserCard
+                      key={chat._id}
+                      user={chat}
+                      onClick={() => setSelectedConversation(chat._id)}
+                    />
+                  ))
+                }
               </div>
             )}
           </div>
