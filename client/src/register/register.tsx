@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, UserPlus } from "lucide-react";
+import { Eye, EyeOff, LogIn, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -217,6 +217,11 @@ const Register = () => {
                           className="w-full bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
                           disabled={loading}
                         >
+                          <UserPlus className="mr-2 h-5 w-5" />
+                          <p className="px-2">
+                            Register
+                          </p>
+                          
                         </Button>
                       </motion.div>
                     </form>
@@ -230,7 +235,7 @@ const Register = () => {
                       className="w-full bg-transparent border border-indigo-500 text-indigo-300 hover:bg-indigo-500 hover:text-white transition-colors duration-300"
                     >
                       <Link to="/login">
-                        <UserPlus className="mr-2 h-5 w-5" /> Login
+                        <LogIn className="mr-2 h-5 w-5" /> Login
                       </Link>
                     </Button>
                   </CardFooter>
