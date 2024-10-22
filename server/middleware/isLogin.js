@@ -8,7 +8,7 @@ export const isLogin = async (req, res, next) => {
         console.log("check-1 middleware");
 
         const token = req.cookies.jwt;  // Error fix: 'req.cookie' should be 'req.cookies' to correctly access the cookie.
-        // console.log(token);
+        console.log(token);
 
         if (!token) {
             return res.status(401).send({
