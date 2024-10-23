@@ -4,6 +4,7 @@ import Navbar from './components/navbar';
 import SearchBar from './components/SearchBar';
 import SideBar from './components/Sidebar';
 import SendMessage from './components/SendMessage';
+import MessageBox from './components/MessageBox';
 
 
 const Home: React.FC = () => {
@@ -13,6 +14,7 @@ const Home: React.FC = () => {
       <SearchBar />
       <SideBar />
       <SendMessage />
+      <MessageBox />
     </div>
   );
 };
