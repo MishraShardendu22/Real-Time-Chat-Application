@@ -1,15 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import axios from "axios";
+import userConversation from "../../zustand/useConversation";
 
-interface Chat {
-  _id: string;
-  fullname: string;
-  username: string;
-}
 
 const SideBar = () => {
-  const [data, setData] = useState<Chat[]>([]);
+  const [data, setData] = useState([]);
   const [error, setError] = useState<string | null>(null);
+
+  const { setSelectedConversation } = userConversation(); 
 
   const fetchData = async () => {
     try {
@@ -22,6 +21,12 @@ const SideBar = () => {
     }
   };
 
+
+  const handleClick = (user: any) => { 
+    console.log(user);
+    setSelectedConversation(user);
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -31,10 +36,14 @@ const SideBar = () => {
       {error ? (
         <p>{error}</p>
       ) : data.length > 0 ? (
-        data.map((chat) => (
-          <div key={chat._id}>
-            <h3>{chat.fullname}</h3>
-            <p>{chat.username}</p>
+        data.map((user: any) => (
+          <div
+            key={user._id}
+            onClick={() => handleClick(user)} 
+            style={{ cursor: 'pointer', border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}
+          >
+            <h3>{user.fullname}</h3>
+            <p>{user.username}</p>
           </div>
         ))
       ) : (

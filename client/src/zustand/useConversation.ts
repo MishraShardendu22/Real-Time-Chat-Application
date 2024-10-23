@@ -6,7 +6,6 @@ interface Message {
     senderId: string;
     receiverId: string;
     message: string;
-    // You can add more fields if needed
 }
 
 interface UserConversationState {

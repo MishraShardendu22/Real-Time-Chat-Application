@@ -1,11 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 import SearchResults from './SearchResult';
+import userConversation from '@/zustand/useConversation';
+
 
 interface User {
   _id: string;
+  fullname: string;
   username: string;
+  gender: string;
   email: string;
+  profilepic: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
 const SearchBar = () => {
@@ -21,6 +29,7 @@ const SearchBar = () => {
       console.error(error);
     }
   };
+
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
