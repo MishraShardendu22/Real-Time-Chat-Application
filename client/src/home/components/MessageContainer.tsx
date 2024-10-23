@@ -1,78 +1,98 @@
-import React, { useEffect, useState } from 'react';
-import userConversation from '../../zustand/useConversation';
-import { useAuth } from '../../context/authContext';
-import MessageList from './MessageList';
-import MessageInput from './MessageInput';
-import WelcomeMessage from './WelcomeMessage';
-import axios from 'axios';
+import { AuthContext } from "@/context/authContext";
+import { useContext } from "react";
+import userConversation from "@/zustand/useConversation";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, UserCircle } from "lucide-react";
 
-const MessageContainer: React.FC<{ selectedConversation: any, onBackUser: () => void }> = ({ selectedConversation, onBackUser }) => {
-  const { messages, setMessage } = userConversation();
-  const { authUser } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [sending, setSending] = useState(false);
+const MessageContainer = () => {
+  const useAuth = useContext(AuthContext);
+  const authUser = useAuth?.authUser;
+  const navigate = useNavigate();
+  const { selectedConversation, setSelectedConversation } = userConversation();
 
-  useEffect(() => {
-    const getMessages = async () => {
-      if (selectedConversation?._id) {
-        setLoading(true);
-        try {
-          const response = await axios.get(`http://localhost:3000/api/message/${authUser._id}`);
-          const data = response.data;
-          if (!data.success) {
-            console.log(data.message);
-          } else {
-            setMessage(data);
-          }
-        } catch (error) {
-          console.log(error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    getMessages();
-  }, [selectedConversation?._id, setMessage]);
-
-  const handleSendMessage = async (message: string) => {
-    setSending(true);
-    try {
-      const res = await axios.post(`http://localhost:3000/api/message/send/${selectedConversation?._id}`, { messages: message });
-      const data = res.data;
-      if (!data.success) {
-        console.log(data.message);
-      } else {
-        setMessage([...messages, data]);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setSending(false);
-    }
+  const viewUser = () => {
+    navigate("/profileReciver");
   };
 
   return (
-    <div className='md:min-w-[500px] h-full flex flex-col py-2'>
-      {selectedConversation === null ? (
-        <WelcomeMessage username={authUser.username} />
-      ) : (
-        <>
-          <div className='flex justify-between gap-1 bg-sky-600 md:px-2 rounded-lg h-10 md:h-12'>
-            <div className='flex gap-2 md:justify-between items-center w-full'>
-              <button onClick={onBackUser} className='bg-white rounded-full px-2 py-1'>
-                {/* Back Button Icon */}
-              </button>
-              <span className='text-gray-950 self-center text-sm md:text-xl font-bold'>
-                {selectedConversation?.username}
-              </span>
+    <header className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700">
+      <div className="max-w-7xl mx-auto">
+        <div className="py-4 px-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              {selectedConversation == null ? (
+                <div>
+                  <div className="flex items-center space-x-3">
+                      <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                        Welcome back, <strong className="text-sm text-gray-500 dark:text-gray-400">
+                        {authUser?.username}
+                      </strong> Start Chatting !! 
+                      </h1>
+                    </div>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-4">
+                  <div className="relative group">
+                    <div 
+                      onClick={viewUser}
+                      className="relative w-12 h-12 rounded-full cursor-pointer transform transition-all duration-300 hover:scale-105"
+                    >
+                      <div className="absolute inset-0 rounded-full border-2 border-blue-500 dark:border-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      
+                      <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
+                      
+                      <div className="relative w-full h-full rounded-full overflow-hidden ring-2 ring-white dark:ring-gray-800">
+                        <img
+                          src={selectedConversation.profilepic}
+                          alt={`${selectedConversation.username}'s profile`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      <div className="absolute left-0 -bottom-24 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
+                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-3 transform -translate-x-1/4 w-48">
+                          <div className="flex items-center space-x-2">
+                            <UserCircle className="w-4 h-4 text-blue-500 dark:text-blue-400" />
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                              View Full Profile
+                            </span>
+                          </div>
+                          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                            Click to see complete details
+                          </div>
+                        </div>
+                        <div className="absolute -top-1 left-6 w-3 h-3 bg-white dark:bg-gray-800 transform rotate-45"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      {selectedConversation.username}
+                    </h2>
+                    <div className="flex items-center space-x-2">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                        {selectedConversation.gender}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
+
+            {selectedConversation && (
+              <button
+                onClick={() => setSelectedConversation(null)}
+                className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Chats
+              </button>
+            )}
           </div>
-          <MessageList messages={messages} loading={loading} authUserId={authUser._id} />
-          <MessageInput onSend={handleSendMessage} sending={sending} />
-        </>
-      )}
-    </div>
+        </div>
+      </div>
+    </header>
   );
 };
 

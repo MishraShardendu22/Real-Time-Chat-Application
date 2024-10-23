@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import Home from "./home/home.tsx";
 import { VerifyUser } from "./utils/VerifyUser.tsx";
 import Profile from "./profile/profile.tsx";
+import ProfileReciver from "./home/components/ProfileReciver.tsx";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route element={<VerifyUser />}>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profileReciver" element={<ProfileReciver />} />
           <Route path="*" element={<Register />} />
         </Route>
       </Routes>

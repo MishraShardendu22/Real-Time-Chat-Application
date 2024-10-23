@@ -3,8 +3,8 @@ import { create } from "zustand";
 
 // Define a proper type for the state to avoid 'any' usage
 interface UserConversationState {
-    selectedConversation: string | null; // Change type as appropriate
-    setSelectedConversation: (selectedConversation: string | null) => void; // Specify string or null
+    selectedConversation: any;
+    setSelectedConversation: (selectedConversation: any) => void; // Specify string or null
     messages: any[]; // You can also define a Message type here
     setMessage: (messages: any[]) => void;
 }
