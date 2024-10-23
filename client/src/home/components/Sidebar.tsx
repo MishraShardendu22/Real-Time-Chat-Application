@@ -158,34 +158,33 @@ const Sidebar: React.FC = () => {
   const authUser = authContext?.authUser;
   // console.log(authUser)
 
-  const { setSelectedConversation } = userConversation();
+  const { messages,setMessage, setSelectedConversation } = userConversation();
   const [loading, setLoading] = useState<boolean>(false);
   const [chats, setChats] = useState<User[]>([]);
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
   const [msgs, setMsgs] = useState<any>([]);
   const [userId, setUserId] = useState<string>("");
 
-  const fetchMessages = async () => {
-    setLoading(true);
-    setUserId(authUser._id);
-    try {
-      const res = await axios.get(`/api/message/${userId}`);
-      console.log(res);
-      
-      if (res.status === 200) { // Check if status is 200
-        setMsgs(res.data.messages);
-      } else {
-        console.log(res);
-      }
-      // console.log("JSR JSR JSR ");
-      // console.log(msgs);
+    const fetchMessages = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get(`/api/message/${authUser?._id}`); // Ensure senderId is included in the request
+        // console.log("res",res);
+        if (res.status !== 200) {
+          console.error("There was an Error fetching messages");
+        } else {
+          // Properly handle the response structure (res.data.messages)
+          setMessage(res.data.messages);
+        }
 
-    } catch (error) {
-      console.error("Error fetching messages:", error);
-    } finally {
-      setLoading(false); // Ensure loading state is set to false in finally block
-    }
-  };
+        console.log(messages)
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
 
   const fetchConversations = async () => {
     setLoading(true);
@@ -254,7 +253,7 @@ const Sidebar: React.FC = () => {
                       user={chat}
                       onClick={() => {
                         setSelectedConversation(chat);
-                        fetchMessages();
+                        fetchMessages()
                       }}
                     />
                   ))
