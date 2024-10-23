@@ -165,26 +165,21 @@ const Sidebar: React.FC = () => {
   const [msgs, setMsgs] = useState<any>([]);
   const [userId, setUserId] = useState<string>("");
 
-    const fetchMessages = async () => {
-      setLoading(true);
-      try {
-        const res = await axios.get(`/api/message/${authUser?._id}`); // Ensure senderId is included in the request
-        // console.log("res",res);
-        if (res.status !== 200) {
-          console.error("There was an Error fetching messages");
+  const fetchMessages = async () => {
+    setLoading(true);
+    try {
+        const res = await axios.get(`/api/message/${authUser?._id}`);
+        if (res.status === 200) {
+            setMessage(res.data.messages); // Ensure that the messages are being set correctly
         } else {
-          // Properly handle the response structure (res.data.messages)
-          setMessage(res.data.messages);
+            console.error("There was an error fetching messages");
         }
-
-        console.log(messages)
-      } catch (error) {
+    } catch (error) {
         console.error("Error fetching messages:", error);
-      } finally {
+    } finally {
         setLoading(false);
-      }
-    };
-
+    }
+};
 
   const fetchConversations = async () => {
     setLoading(true);
@@ -249,12 +244,12 @@ const Sidebar: React.FC = () => {
                 {
                   chats.map((chat) => (
                     <UserCard
-                      key={chat._id}
-                      user={chat}
-                      onClick={() => {
-                        setSelectedConversation(chat);
-                        fetchMessages()
-                      }}
+                        key={chat._id}
+                        user={chat}
+                        onClick={() => {
+                            setSelectedConversation(chat);
+                            fetchMessages();  // Fetch messages after setting selected conversation
+                        }}
                     />
                   ))
                 }

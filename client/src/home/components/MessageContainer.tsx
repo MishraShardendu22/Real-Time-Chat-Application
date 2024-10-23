@@ -3,7 +3,7 @@ import { AuthContext } from "@/context/authContext";
 import { useContext, useState, useEffect } from "react";
 import userConversation from "@/zustand/useConversation";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ChartNoAxesColumnDecreasing, UserCircle } from "lucide-react";
+import { ArrowLeft } from "lucide-react"; // Removed UserCircle since it's not used
 import axios from "axios";
 
 const MessageContainer = () => {
@@ -12,12 +12,24 @@ const MessageContainer = () => {
   const navigate = useNavigate();
   const { messages, selectedConversation, setSelectedConversation } = userConversation();
 
-  const [senderId, setSenderId] = useState(authUser?.id || ""); // Set senderId initially
   const [loading, setLoading] = useState(false);
 
   const viewUser = () => {
     navigate("/profileReciver");
   };
+
+  useEffect(() => {
+    console.log(messages);
+    console.log(selectedConversation?._id);
+  }, [messages, selectedConversation]);
+
+    const filteredMessages = messages.filter((message) => {
+      return (
+          (message.senderId === authUser?._id && message.reciverId === selectedConversation?._id) ||
+          (message.senderId === selectedConversation?._id && message.reciverId === authUser?._id)
+      );
+    });
+
 
   return (
     <>
@@ -28,13 +40,9 @@ const MessageContainer = () => {
               <div className="flex items-center space-x-4">
                 {selectedConversation == null ? (
                   <div>
-                    <div className="flex items-center space-x-3">
-                      <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                        Welcome back, <strong className="text-sm text-gray-500 dark:text-gray-400">
-                          {authUser?.username}
-                        </strong> Start Chatting !!
-                      </h1>
-                    </div>
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                      Welcome back, <strong className="text-sm text-gray-500 dark:text-gray-400">{authUser?.username}</strong> Start Chatting !!
+                    </h1>
                   </div>
                 ) : (
                   <div className="flex items-center space-x-4">
@@ -53,21 +61,6 @@ const MessageContainer = () => {
                             alt={`${selectedConversation.username}'s profile`}
                             className="w-full h-full object-cover"
                           />
-                        </div>
-
-                        <div className="absolute left-0 -bottom-24 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
-                          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-3 transform -translate-x-1/4 w-48">
-                            <div className="flex items-center space-x-2">
-                              <UserCircle className="w-4 h-4 text-blue-500 dark:text-blue-400" />
-                              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                View Full Profile
-                              </span>
-                            </div>
-                            <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                              Click to see complete details
-                            </div>
-                          </div>
-                          <div className="absolute -top-1 left-6 w-3 h-3 bg-white dark:bg-gray-800 transform rotate-45"></div>
                         </div>
                       </div>
                     </div>
@@ -100,15 +93,21 @@ const MessageContainer = () => {
         </div>
       </header>
 
-      {/* Display the messages */}
+      {/* Display the filtered messages */}
       <div className="p-4">
         {loading ? (
           <p>Loading messages...</p>
-        ) : <>{messages.map((res,idx) => {
-          <p>
-            res
-          </p>
-        })}</>}
+        ) : (
+          <div className="flex flex-col space-y-2">
+            {filteredMessages.map((message, index) => (
+              <div key={index} className={`message ${message.senderId === authUser?._id ? 'text-left' : 'text-right'}`}>
+                <div className={`inline-block p-2 rounded-lg max-w-xs ${message.senderId === authUser?._id ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}>
+                  {message.message}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
