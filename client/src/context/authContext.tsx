@@ -4,7 +4,7 @@ import { createContext , useContext ,useState } from "react";
 
 export const AuthContext = createContext<{ authUser: any; setAuthUser: React.Dispatch<React.SetStateAction<any>> } | undefined>(undefined);
 
-export  const useAuth =()=>{
+export const useAuth =()=>{
     return useContext(AuthContext)
 }
 
