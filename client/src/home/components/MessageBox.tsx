@@ -9,24 +9,51 @@ const MessageBox = () => {
   const getChats = async () => {
     const selectedId = selectedConversation?._id;
     if (selectedId) {
-      const res = await axios.get(`/api/message/${selectedId}`);
-      setMsgs(res.data.messages);
+      try {
+        const res = await axios.get(`/api/message/${selectedId}`); // Fetching messages
+        if (res.data?.messages) {
+          setMsgs(res.data.messages);
+        } else {
+          setMsgs([]);
+        }
+      } catch (error) {
+        console.error("Error fetching chats:", error);
+        setMsgs([]);
+      }
     }
   };
 
   useEffect(() => {
-    getChats();
+    if (selectedConversation) {
+      getChats(); // Initial fetch when selectedConversation changes
+
+      // Set up an interval to fetch chats every 5 seconds
+      const interval = setInterval(getChats, 10000); // 5000 ms = 5 seconds
+
+      // Clear interval on component unmount or when selectedConversation changes
+      return () => clearInterval(interval);
+    } else {
+      setMsgs([]);
+    }
   }, [selectedConversation]);
+
+  if (!selectedConversation) {
+    return <div>No conversation selected</div>;
+  }
 
   return (
     <div>
-      {msgs.map((msg) => (
-        <div key={msg._id}>
-          <p style={{ color: msg.senderId === selectedConversation?._id ? 'blue' : 'red' }}>
-            {msg.message}
-          </p>
-        </div>
-      ))}
+      {msgs.length === 0 ? (
+        <div>No Chat yet</div>
+      ) : (
+        msgs.map((msg) => (
+          <div key={msg._id}>
+            <p style={{ color: msg.senderId === selectedConversation?._id ? 'blue' : 'red' }}>
+              {msg.message}
+            </p>
+          </div>
+        ))
+      )}
     </div>
   );
 };
