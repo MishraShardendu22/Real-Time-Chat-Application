@@ -11,10 +11,10 @@ const Home: React.FC = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex flex-col h-screen bg-gray-50"
+      className="flex flex-col h-screen bg-gray-900"
     >
       {/* Navbar - Fixed at top */}
-      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b">
+      <div className="sticky top-0 z-50 bg-gray-800/80 backdrop-blur-md border-b border-gray-700">
         <Navbar />
       </div>
 
@@ -24,15 +24,15 @@ const Home: React.FC = () => {
         <motion.div 
           initial={{ x: -300 }}
           animate={{ x: 0 }}
-          className="w-full max-w-sm border-r bg-white/50 backdrop-blur-sm flex flex-col h-full"
+          className="w-full max-w-sm border-r border-gray-700 bg-gray-800/50 backdrop-blur-md flex flex-col h-full"
         >
           {/* Search Section */}
-          <div className="p-4 border-b">
+          <div className="p-4 border-b border-gray-700">
             <SearchBar />
           </div>
 
           {/* Conversations List */}
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 overflow-hidden hover:overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
             <SideBar />
           </div>
         </motion.div>
@@ -41,16 +41,16 @@ const Home: React.FC = () => {
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex-1 flex flex-col bg-white/30 backdrop-blur-sm"
+          className="flex-1 flex flex-col bg-gray-900/30 backdrop-blur-md"
         >
           {/* Messages Container */}
-          <div className="flex-1 overflow-hidden p-4">
+          <div className="flex-1 overflow-hidden hover:overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
             <MessageBox />
           </div>
 
           {/* Message Input - Fixed at bottom */}
-          <div className="border-t bg-white/50 backdrop-blur-sm">
-            <div className="max-w-5xl mx-auto">
+          <div className="border-t border-gray-700 bg-gray-800/50 backdrop-blur-md">
+            <div className="max-w-5xl mx-auto px-4 py-3">
               <SendMessage />
             </div>
           </div>
