@@ -26,8 +26,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({ searchResults }) => {
 
   const handleClick = async (user: User) => {
     console.log(user);
-    const { _id, username, profilepic, gender } = user;
-    setSelectedConversation({ _id, username, profilePic: profilepic, gender });
+    const { _id, username, profilepic, gender, fullname } = user;
+    setSelectedConversation({ _id, username, profilepic: profilepic, gender, fullname });
   };
 
   return (

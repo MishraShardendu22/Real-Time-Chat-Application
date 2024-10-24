@@ -10,9 +10,9 @@ interface Message {
 
 interface UserConversationState {
     selectedConversation: {
-      participants: any; _id: string; username: string; profilePic: string; gender: string 
+      fullname : string ;_id: string; username: string; profilepic: string; gender: string; email : string; 
 } | null;
-    setSelectedConversation: (selectedConversation: { _id: string; username: string; profilePic: string; gender: string } | null) => void;
+    setSelectedConversation: (selectedConversation: { fullname: string; _id: string; username: string;email : string; profilepic: string; gender: string } | null) => void;
     messages: Message[];
     setMessages: (messages: Message[]) => void;
 }

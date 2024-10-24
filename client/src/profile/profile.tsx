@@ -1,135 +1,158 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Mail, User, MessageCircle, ArrowLeft } from 'lucide-react';
 import { useAuth } from "@/context/authContext";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import userConversation from '@/zustand/useConversation';
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BackgroundGradient } from "../components/ui/background-gradient.tsx";
+import { ArrowLeft, User, UserCheck, MessageCircle, Users, ChevronRight } from "lucide-react";
 
-const Profile = () => {
+interface ProfileItemProps {
+  label: string;
+  text: string;
+  icon?: React.ReactNode;
+}
+
+const ProfileItem: React.FC<ProfileItemProps> = ({ label, text, icon }) => (
+  <div className="group relative overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+    <div className="flex items-center gap-4 p-5 bg-slate-800/30 rounded-2xl border border-slate-700/30 backdrop-blur-lg transform transition-all duration-300 hover:translate-x-1 hover:shadow-xl">
+      <div className="flex-shrink-0 p-3.5 bg-gradient-to-br from-slate-700 to-slate-800 rounded-xl text-slate-200 shadow-lg group-hover:shadow-xl group-hover:text-white transition-all duration-300 ring-1 ring-slate-600/30">
+        {icon}
+      </div>
+      <div className="flex-grow">
+        <p className="text-sm font-medium text-slate-400 mb-1 transition-colors duration-300 group-hover:text-slate-300">{label}</p>
+        <p className="text-base font-semibold text-slate-200 break-all transition-colors duration-300 group-hover:text-white">{text}</p>
+      </div>
+      <ChevronRight className="w-5 h-5 text-slate-500 opacity-0 group-hover:opacity-100 transform transition-all duration-300 group-hover:translate-x-1" />
+    </div>
+  </div>
+);
+
+const ProfileLayout: React.FC<{
+  children: React.ReactNode;
+  title: string;
+}> = ({ children, title }) => {
   const navigate = useNavigate();
+  
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 p-4 md:p-8">
+      <Button
+        variant="outline"
+        onClick={() => navigate("/")}
+        className="mb-8 flex items-center gap-2 hover:shadow-lg transition-all duration-300 bg-slate-800/40 text-slate-300 border-slate-700/30 hover:bg-slate-800/60 hover:text-slate-200 backdrop-blur-lg hover:translate-x-1"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Back to Home
+      </Button>
+      
+      <Card className="max-w-3xl mx-auto shadow-2xl border-slate-700/30 bg-slate-900/80 backdrop-blur-xl ring-1 ring-slate-600/30 rounded-3xl">
+        <CardHeader className="text-center pb-2 px-8 pt-8">
+          <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 tracking-tight">
+            {title}
+          </h1>
+        </CardHeader>
+        <CardContent className="p-8">
+          {children}
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export const Profile = () => {
   const authContext = useAuth();
   if (!authContext) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   const { authUser } = authContext;
-  const { email, fullname, message, profilepic, username, _id } = authUser;
-
-  const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-        mass: 1,
-        delayChildren: 0.3,
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 10,
-        mass: 0.5
-      }
-    }
-  };
+  const { fullname, message, profilepic, username, _id } = authUser;
 
   return (
-      <div className="min-h-1/2-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center relative">
-<motion.div
-  initial={{ opacity: 0, x: -20 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ duration: 0.3 }}
-  className="z-10 mx-9 my-9 absolute top-4 left-4 sm:top-8 sm:left-8"
->
-  <Button
-    variant="outline"
-    size="icon"
-    onClick={() => navigate("/")}
-    className="bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-200"
-  >
-    <ArrowLeft className="h-4 w-4" />
-    <p className="sr-only">Back to Home</p>
-  </Button>
-</motion.div>
-
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="w-full max-w-2xl"
-          >
-          <BackgroundGradient>
-          {/* Adjusted padding to reduce height */}
-          <Card className="w-full bg-white dark:bg-gray-800 shadow-2xl overflow-hidden rounded-2xl border-t-4 border-blue-500 dark:border-blue-400">
-            <CardHeader className="pt-4 relative pb-0"> {/* Changed pt-8 to pt-4 */}
-              <motion.div
-                variants={itemVariants}
-                className="flex flex-col items-center"
-              >
-                <Avatar className="h-32 w-32 mb-4 ring-4 ring-blue-400 dark:ring-blue-500 shadow-lg"> {/* Changed h-40 to h-32 */}
-                  <AvatarImage src={profilepic} alt={username} />
-                  <AvatarFallback className="text-4xl font-bold bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300">
-                    {username.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <CardTitle className="text-3xl font-extrabold text-center mb-2 text-gray-800 dark:text-gray-100"> {/* Changed text-4xl to text-3xl */}
-                  {fullname}
-                </CardTitle>
-                <Badge variant="secondary" className="mb-4 px-4 py-1 text-lg font-semibold bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300">
-                  Username : {username}
-                </Badge>
-              </motion.div>
-            </CardHeader>
-            <CardContent className="pt-4 pb-6 px-6"> {/* Changed pt-6 to pt-4 */}
-              <motion.div variants={itemVariants} className="space-y-4"> {/* Changed space-y-6 to space-y-4 */}
-                <ProfileItem icon={<Mail className="text-blue-500" size={24} />} label="Email" text={email} />
-                <ProfileItem icon={<User className="text-green-500" size={24} />} label="User ID" text={_id} />
-                <ProfileItem icon={<MessageCircle className="text-purple-500" size={24} />} label="Status" text={message} />
-              </motion.div>
-            </CardContent>
-          </Card>
-        </BackgroundGradient>
-        </motion.div>
+    <ProfileLayout title="My Profile">
+      <div className="flex flex-col items-center mb-10">
+        <div className="relative mb-8 group">
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-75 group-hover:opacity-100 blur-md transition duration-500"></div>
+          <div className="relative rounded-full p-1 bg-gradient-to-r from-blue-500 to-purple-500">
+            <div className="relative rounded-full overflow-hidden h-40 w-40 ring-4 ring-slate-800">
+              <img
+                src={profilepic}
+                alt={username}
+                className="h-full w-full object-cover transform transition-transform duration-500 group-hover:scale-110"
+              />
+            </div>
+            <div className="absolute bottom-2 right-2 w-5 h-5 bg-emerald-500 rounded-full border-4 border-slate-800 shadow-lg ring-2 ring-emerald-400/50"></div>
+          </div>
+        </div>
+        <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 mb-3 tracking-tight">{fullname}</h2>
+        <div className="relative group">
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/50 to-purple-500/50 rounded-full opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-300"></div>
+          <p className="relative text-slate-300 bg-slate-800/50 px-8 py-2.5 rounded-full text-sm font-medium shadow-xl ring-1 ring-slate-600/30 backdrop-blur-lg">
+            @{username}
+          </p>
+        </div>
       </div>
+
+      <div className="space-y-4">
+        <ProfileItem label="Username" text={username} icon={<User className="w-5 h-5" />} />
+        <ProfileItem label="User ID" text={_id} icon={<UserCheck className="w-5 h-5" />} />
+        <ProfileItem label="Status" text={message} icon={<MessageCircle className="w-5 h-5" />} />
+      </div>
+    </ProfileLayout>
   );
 };
 
-interface ProfileItemProps {
-  icon: React.ReactNode;
-  label: string;
-  text: string;
-}
+export const ProfileSelected = () => {
+  const { selectedConversation } = userConversation();
+  
+  return (
+    <ProfileLayout title="User Profile">
+      <div className="flex flex-col items-center mb-10">
+        <div className="relative mb-8 group">
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-75 group-hover:opacity-100 blur-md transition duration-500"></div>
+          <div className="relative rounded-full p-1 bg-gradient-to-r from-blue-500 to-purple-500">
+            <div className="relative rounded-full overflow-hidden h-40 w-40 ring-4 ring-slate-800">
+              <img
+                src={selectedConversation?.profilepic}
+                alt={selectedConversation?.username || 'User'}
+                className="h-full w-full object-cover transform transition-transform duration-500 group-hover:scale-110"
+              />
+            </div>
+            <div className="absolute bottom-2 right-2 w-5 h-5 bg-emerald-500 rounded-full border-4 border-slate-800 shadow-lg ring-2 ring-emerald-400/50"></div>
+          </div>
+        </div>
+        <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 mb-3 tracking-tight">
+          {selectedConversation?.fullname || 'Unknown User'}
+        </h2>
+        <div className="relative group">
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/50 to-purple-500/50 rounded-full opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-300"></div>
+          <p className="relative text-slate-300 bg-slate-800/50 px-8 py-2.5 rounded-full text-sm font-medium shadow-xl ring-1 ring-slate-600/30 backdrop-blur-lg">
+            @{selectedConversation?.username || 'unavailable'}
+          </p>
+        </div>
+      </div>
 
-const ProfileItem: React.FC<ProfileItemProps> = ({ icon, label, text }) => (
-  <motion.div
-    whileHover={{ scale: 1.02 }}
-    whileTap={{ scale: 0.98 }}
-    className="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md transition-all duration-200 ease-in-out hover:shadow-lg"
-  >
-    <div className="flex-shrink-0 bg-white dark:bg-gray-600 p-2 rounded-full shadow-inner">
-      {icon}
-    </div>
-    <div className="flex-grow">
-      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{label}</p>
-      <p className="text-lg font-semibold text-gray-900 dark:text-white">{text}</p>
-    </div>
-  </motion.div>
-);
+      <div className="space-y-4">
+        <ProfileItem
+          label="Username"
+          text={selectedConversation?.username || 'Unavailable'}
+          icon={<User className="w-5 h-5" />}
+        />
+        <ProfileItem
+          label="User ID"
+          text={selectedConversation?._id || 'No ID Available'}
+          icon={<UserCheck className="w-5 h-5" />}
+        />
+        <ProfileItem
+          label="Gender"
+          text={selectedConversation?.gender || 'No Gender Provided'}
+          icon={<Users className="w-5 h-5" />}
+        />
+      </div>
+    </ProfileLayout>
+  );
+};
 
-export default Profile;
+export default {
+  Profile,
+  ProfileSelected
+};

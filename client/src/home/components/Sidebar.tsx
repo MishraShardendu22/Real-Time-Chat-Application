@@ -17,6 +17,7 @@ const SideBar = () => {
     username: string;
     profilePic: string;
     gender: string;
+    profilepic: string;
   }
   
   const [data, setData] = useState<User[]>([]);
@@ -29,6 +30,7 @@ const SideBar = () => {
     try {
       setIsLoading(true);
       const response = await axios.get("/api/user/currentChats");
+      console.log(selectedConversation)
       setData(response.data);
     } catch (err) {
       console.error(err);
