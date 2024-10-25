@@ -4,6 +4,9 @@
 
 **Original Playlist Working at**: [Real Time Chat Application](https://github.com/MishraShardendu22/Real-Time-Chat-Application)
 
+# [Backend](https://whatsgram2-0-back.onrender.com)
+# [Frontend](https://whatsgram2-0-front-1.onrender.com/)
+
 ## Features
 
 - User-friendly UI with Tailwind CSS
